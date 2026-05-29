@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const CompanyDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ const CompanyDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/companies/${id}`)
+    axios.get(`${API_URL}/api/companies/${id}`)
       .then(res => { setCompany(res.data); setLoading(false); })
       .catch(err => { console.error(err); setLoading(false); });
   }, [id]);

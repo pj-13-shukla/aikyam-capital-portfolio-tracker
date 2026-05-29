@@ -4,6 +4,8 @@ import Papa from 'papaparse';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const CompanyTable = ({ companies, onRefresh }) => {
   const navigate = useNavigate();
   const [filterStatus, setFilterStatus] = useState('All');
@@ -20,7 +22,7 @@ const CompanyTable = ({ companies, onRefresh }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this company?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/companies/${id}`);
+        await axios.delete(`${API_URL}/api/companies/${id}`);
         toast.success('Company deleted successfully!');
         onRefresh();
       } catch (err) {
@@ -56,7 +58,6 @@ const CompanyTable = ({ companies, onRefresh }) => {
 
   return (
     <div style={{ padding: '0 32px 32px' }}>
-      {/* Filters + Export */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={selectStyle}>
           {statuses.map(s => <option key={s}>{s}</option>)}
@@ -68,7 +69,6 @@ const CompanyTable = ({ companies, onRefresh }) => {
         <button onClick={onRefresh} style={btnStyle('#38bdf8')}>🔄 Refresh Prices</button>
       </div>
 
-      {/* Table */}
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
           <thead>

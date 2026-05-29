@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const AddEditCompany = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,11 +20,11 @@ const AddEditCompany = () => {
 
   useEffect(() => {
     if (isEdit) {
-      axios.get(`http://localhost:8000/api/companies/${id}`)
+      axios.get(`${API_URL}/api/companies/${id}`)
         .then(res => setForm(res.data))
         .catch(err => console.error(err));
     }
-  }, [id]);
+  }, [id, isEdit]);
 
   const validate = () => {
     const newErrors = {};
@@ -41,9 +43,9 @@ const AddEditCompany = () => {
     setLoading(true);
     try {
       if (isEdit) {
-        await axios.put(`http://localhost:8000/api/companies/${id}`, form);
+        await axios.put(`${API_URL}/api/companies/${id}`, form);
       } else {
-        await axios.post('http://localhost:8000/api/companies', form);
+        await axios.post(`${API_URL}/api/companies`, form);
       }
       toast.success(isEdit ? 'Company updated successfully!' : 'Company added successfully!');
       navigate('/');

@@ -4,6 +4,8 @@ import SummaryBar from '../components/SummaryBar';
 import CompanyTable from '../components/CompanyTable';
 import CompanyChart from '../components/CompanyChart';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const Dashboard = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ const Dashboard = () => {
   const fetchCompanies = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:8000/api/companies');
+      const res = await axios.get(`${API_URL}/api/companies`);
       setCompanies(res.data);
       setLastUpdated(new Date().toLocaleTimeString());
     } catch (err) {
@@ -24,7 +26,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchCompanies();
-    // Auto refresh every 60 seconds
     const interval = setInterval(fetchCompanies, 60000);
     return () => clearInterval(interval);
   }, []);
